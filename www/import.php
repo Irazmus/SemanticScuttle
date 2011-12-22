@@ -66,6 +66,7 @@ if ($userservice->isLoggedOn() && sizeof($_FILES) > 0 && $_FILES['userfile']['si
 
 function startElement($parser, $name, $attrs) {
 	global $depth, $status, $tplVars, $userservice;
+    $bStatus = NULL;
 
 	$bookmarkservice =SemanticScuttle_Service_Factory::get('Bookmark');
 
@@ -87,6 +88,11 @@ function startElement($parser, $name, $attrs) {
 				case 'TAG':
 					$tags = strtolower($attrVal);
 					break;
+                case 'PRIVATE':
+                    # If status_override is set, ignore file's privacy settings
+                    if ($_POST['status_override'] != 1) {
+                        $bStatus = ($attrVal == 'yes') ? 2: 0;
+                    }
 			}
 		}
 		if ($bookmarkservice->bookmarkExists($bAddress, $userservice->getCurrentUserId())) {
@@ -100,7 +106,7 @@ function startElement($parser, $name, $attrs) {
 				$bDatetime = gmdate('Y-m-d H:i:s');
 			}
 
-			if ($bookmarkservice->addBookmark($bAddress, $bTitle, $bDescription, '', $status, $tags, null, $bDatetime, true, true))
+			if ($bookmarkservice->addBookmark($bAddress, $bTitle, $bDescription, '', ((isset($bStatus)) ? $bStatus: $status), $tags, null, $bDatetime, true, true))
 			$tplVars['msg'] = T_('Bookmark imported.');
 			else
 			$tplVars['error'] = T_('There was an error saving your bookmark. Please try again or contact the administrator.');

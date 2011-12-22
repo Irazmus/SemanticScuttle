@@ -20,6 +20,14 @@ $this->includeTemplate($GLOBALS['top_include']);
             <option value="2"><?php echo T_('Private'); ?></option>
         </select>
     </td>
+    <tr>
+        <th>
+            <?php echo T_('Ignore file\'s privacy settings'); ?>
+        </th>
+        <td>
+            <input type="checkbox" name="status_override" value="1">
+        </td>
+    </tr>
 </tr>
 <tr>
     <td />

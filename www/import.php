@@ -88,11 +88,11 @@ function startElement($parser, $name, $attrs) {
 				case 'TAG':
 					$tags = strtolower($attrVal);
 					break;
-                case 'PRIVATE':
-                    # If status_override is set, ignore file's privacy settings
-                    if ($_POST['status_override'] != 1) {
-                        $bStatus = ($attrVal == 'yes') ? 2: 0;
-                    }
+            case 'PRIVATE':
+                // If status_override is set, ignore file's privacy settings
+                if ($_POST['status_override'] != 1) {
+                    $bStatus = ($attrVal == 'yes') ? 2: 0;
+                }
 			}
 		}
 		if ($bookmarkservice->bookmarkExists($bAddress, $userservice->getCurrentUserId())) {
